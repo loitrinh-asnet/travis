@@ -1,0 +1,19 @@
+sudo: required
+services:
+  - docker
+env:
+  global:
+    - REGISTRY_USER=loitrinh
+    - REGISTRY_PASS=Xu@nloiasnet
+before_script:
+  - docker pull loitrinh/myimage || true
+script:
+  - docker build --pull --cache-from loitrinh/myimage --tag loitrinh/myimage .
+  - docker run loitrinh/myimage
+after_script:
+  - docker images
+deploy:
+  provider: script
+  script: docker push loitrinh/myimage
+  on:
+    branch: master
